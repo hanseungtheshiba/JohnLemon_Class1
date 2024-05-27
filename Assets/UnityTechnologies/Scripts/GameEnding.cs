@@ -19,9 +19,17 @@ public class GameEnding : MonoBehaviour
     [Header("실패 캔버스그룹")]
     [SerializeField]
     private CanvasGroup caughtBackgroundImageCanvasGroup;
+    [Header("성공 사운드")]
+    [SerializeField]
+    private AudioSource escapeSound;
+    [Header("실패 사운드")]
+    [SerializeField]
+    private AudioSource caughtSound;
 
     private bool isPlayerExit = false;
     private bool isPlayerCaught = false;
+
+    private bool hasAudioPlayed = false;
     
     private float timer = 0f;
 
@@ -43,17 +51,24 @@ public class GameEnding : MonoBehaviour
     {
         if(isPlayerExit == true)
         {
-            EndLevel(exitBackgroundImageCanvasGroup, false);
+            EndLevel(exitBackgroundImageCanvasGroup, false, escapeSound);
         }
         else if(isPlayerCaught == true)
         {
-            EndLevel(caughtBackgroundImageCanvasGroup, true);
+            EndLevel(caughtBackgroundImageCanvasGroup, true, caughtSound);
         }
     }
 
     // CanvasGroup : 성공/실패 이미지, doRestart : 재시작 여부
-    private void EndLevel(CanvasGroup imageGroup, bool doRestart)
-    {        
+    private void EndLevel(CanvasGroup imageGroup, bool doRestart, 
+        AudioSource audioSource)
+    {
+        if (!hasAudioPlayed)
+        {
+            audioSource.Play();
+            hasAudioPlayed = true;
+        }
+
         // timer = timer + Time.deltaTime과 같음
         timer += Time.deltaTime;
 

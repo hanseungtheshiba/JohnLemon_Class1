@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody rb;
     private Vector3 movement = Vector3.zero;
     private Quaternion rotation = Quaternion.identity;
+    private AudioSource audioSource;
 
     [HeaderAttribute("회전 속도")]
     public float turnSpeed = 20f;
@@ -17,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void FixedUpdate()
@@ -33,6 +35,16 @@ public class PlayerMovement : MonoBehaviour
         bool isWalking = hasHorizontalInput || hasVerticalInput;
         // 애니메이터의 파라미터를 입력
         animator.SetBool("IsWalking", isWalking);
+
+        if (isWalking)
+        {
+            audioSource.Play();
+        }
+        else
+        {
+            audioSource.Stop();
+        }
+
         // desiredFoward : 방향 바라보는 벡터
         // Time.fixedDeltaTime : FixedUpdate 한 프레임당 걸리는 시간
         Vector3 desiredFoward = Vector3.RotateTowards(transform.forward, movement, 
