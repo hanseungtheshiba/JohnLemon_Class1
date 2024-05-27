@@ -1,16 +1,16 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private Animator animator; // º¯¼ö
+    private Animator animator; // ë³€ìˆ˜
     private Rigidbody rb;
     private Vector3 movement = Vector3.zero;
     private Quaternion rotation = Quaternion.identity;
 
-    [HeaderAttribute("È¸Àü ¼Óµµ")]
+    [HeaderAttribute("íšŒì „ ì†ë„")]
     public float turnSpeed = 20f;
 
     private void Start()
@@ -23,31 +23,31 @@ public class PlayerMovement : MonoBehaviour
     {
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
-        // movement.Set : º¤ÅÍÀÇ °ªÀ» ÀúÀå
+        // movement.Set : ë²¡í„°ì˜ ê°’ì„ ì €ì¥
         movement.Set(horizontal, 0f, vertical);
-        // movement.Normalize() : º¤ÅÍ Á¤±ÔÈ­ (±æÀÌ¸¦ 1·Î ¸¸µê)
+        // movement.Normalize() : ë²¡í„° ì •ê·œí™” (ê¸¸ì´ë¥¼ 1ë¡œ ë§Œë“¦)
         movement.Normalize();
-        // ÀÔ·Â Ã¼Å©
+        // ì…ë ¥ ì²´í¬
         bool hasHorizontalInput = !Mathf.Approximately(horizontal, 0f);
         bool hasVerticalInput = !Mathf.Approximately(vertical, 0f);
         bool isWalking = hasHorizontalInput || hasVerticalInput;
-        // ¾Ö´Ï¸ŞÀÌÅÍÀÇ ÆÄ¶ó¹ÌÅÍ¸¦ ÀÔ·Â
+        // ì• ë‹ˆë©”ì´í„°ì˜ íŒŒë¼ë¯¸í„°ë¥¼ ì…ë ¥
         animator.SetBool("IsWalking", isWalking);
-        // desiredFoward : ¹æÇâ ¹Ù¶óº¸´Â º¤ÅÍ
-        // Time.fixedDeltaTime : FixedUpdate ÇÑ ÇÁ·¹ÀÓ´ç °É¸®´Â ½Ã°£
+        // desiredFoward : ë°©í–¥ ë°”ë¼ë³´ëŠ” ë²¡í„°
+        // Time.fixedDeltaTime : FixedUpdate í•œ í”„ë ˆì„ë‹¹ ê±¸ë¦¬ëŠ” ì‹œê°„
         Vector3 desiredFoward = Vector3.RotateTowards(transform.forward, movement, 
             turnSpeed * Time.fixedDeltaTime, 0f);
-        // Quaternion : ¹æÇâº¤ÅÍ¸¦ Á÷Á¢ ÃÄ´Ùº¸°Ô µ¹·ÁÁØ´Ù
+        // Quaternion : ë°©í–¥ë²¡í„°ë¥¼ ì§ì ‘ ì³ë‹¤ë³´ê²Œ ëŒë ¤ì¤€ë‹¤
         rotation = Quaternion.LookRotation(desiredFoward);
     }
 
     private void OnAnimatorMove()
     {
-        // rb.MovePosition : ¸®Áş¹Ùµğ¸¦ ÅëÇÑ À§Ä¡ ÀÌµ¿
-        // animator.deltaPosition.magnitude : ¾Ö´Ï¸ŞÀÌ¼Ç´ç ÇÑ ¹ßÀÚ±¹
+        // rb.MovePosition : ë¦¬ì§“ë°”ë””ë¥¼ í†µí•œ ìœ„ì¹˜ ì´ë™
+        // animator.deltaPosition.magnitude : ì• ë‹ˆë©”ì´ì…˜ë‹¹ í•œ ë°œìêµ­
         rb.MovePosition(rb.position + 
             movement * animator.deltaPosition.magnitude);
-        // rb.MoveRotation : ¸®Áş¹Ùµğ¸¦ ÅëÇÑ È¸Àü
+        // rb.MoveRotation : ë¦¬ì§“ë°”ë””ë¥¼ í†µí•œ íšŒì „
         rb.MoveRotation(rotation);
     }
 }

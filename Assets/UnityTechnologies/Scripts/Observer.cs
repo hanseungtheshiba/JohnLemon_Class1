@@ -1,13 +1,13 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Observer : MonoBehaviour
 {
-    [Header("ÇÃ·¹ÀÌ¾î °ÔÀÓ¿ÀºêÁ§Æ®")]
+    [Header("í”Œë ˆì´ì–´ ê²Œì„ì˜¤ë¸Œì íŠ¸")]
     [SerializeField]
     private GameObject player;
-    [Header("°ÔÀÓ¿À¹ö Æ®¸®°Å ¿ÀºêÁ§Æ®")]
+    [Header("ê²Œì„ì˜¤ë²„ íŠ¸ë¦¬ê±° ì˜¤ë¸Œì íŠ¸")]
     [SerializeField]
     private GameEnding gameEnding;
 
@@ -40,7 +40,7 @@ public class Observer : MonoBehaviour
             {
                 if(raycastHit.collider.gameObject.Equals(player))
                 {
-
+                    gameEnding.CaughtPlayer();    
                 }
             }
         }

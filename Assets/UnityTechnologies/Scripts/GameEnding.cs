@@ -1,23 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+ï»¿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameEnding : MonoBehaviour
 {
-    [Header("ÆäÀÌµå ½Ã°£")]
+    [Header("íŽ˜ì´ë“œ ì‹œê°„")]
     [SerializeField]
     private float fadeDuration = 1f;
-    [Header("ÀÌ¹ÌÁö Ç¥½Ã ½Ã°£")]
+    [Header("ì´ë¯¸ì§€ í‘œì‹œ ì‹œê°„")]
     [SerializeField]
     private float displayImageDuration = 1f;
-    [Header("ÇÃ·¹ÀÌ¾î °ÔÀÓ¿ÀºêÁ§Æ®")]
+    [Header("í”Œë ˆì´ì–´ ê²Œìž„ì˜¤ë¸Œì íŠ¸")]
     [SerializeField]
     private GameObject player;
 
-    [Header("¼º°ø Äµ¹ö½º±×·ì")]
+    [Header("ì„±ê³µ ìº”ë²„ìŠ¤ê·¸ë£¹")]
     [SerializeField]
     private CanvasGroup exitBackgroundImageCanvasGroup;
-    [Header("½ÇÆÐ Äµ¹ö½º±×·ì")]
+    [Header("ì‹¤íŒ¨ ìº”ë²„ìŠ¤ê·¸ë£¹")]
     [SerializeField]
     private CanvasGroup caughtBackgroundImageCanvasGroup;
 
@@ -28,35 +27,47 @@ public class GameEnding : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // .Equals() : ==°ú °°À½
+        // .Equals() : ==ê³¼ ê°™ìŒ
         if(other.gameObject.Equals(player))
         {
             isPlayerExit = true;
         }
     }
 
+    public void CaughtPlayer()
+    {
+        isPlayerCaught = true;
+    }
+
     private void Update()
     {
         if(isPlayerExit == true)
         {
-            EndLevel(exitBackgroundImageCanvasGroup);
+            EndLevel(exitBackgroundImageCanvasGroup, false);
         }
         else if(isPlayerCaught == true)
         {
-            EndLevel(caughtBackgroundImageCanvasGroup);
+            EndLevel(caughtBackgroundImageCanvasGroup, true);
         }
     }
 
-    private void EndLevel(CanvasGroup imageGroup)
-    {
-        // timer = timer + Time.deltaTime°ú °°À½
+    // CanvasGroup : ì„±ê³µ/ì‹¤íŒ¨ ì´ë¯¸ì§€, doRestart : ìž¬ì‹œìž‘ ì—¬ë¶€
+    private void EndLevel(CanvasGroup imageGroup, bool doRestart)
+    {        
+        // timer = timer + Time.deltaTimeê³¼ ê°™ìŒ
         timer += Time.deltaTime;
 
         imageGroup.alpha = timer / fadeDuration;
 
         if(timer > fadeDuration + displayImageDuration)
         {
-            // °ÔÀÓ Á¾·á
+            if (doRestart == true)
+            {
+                SceneManager.LoadScene(0);
+                return;
+            }            
+
+            // ê²Œìž„ ì¢…ë£Œ
             Application.Quit();
         }
     }
